@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDie : Mortal
+public abstract class Mortal : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -16,8 +16,5 @@ public class EnemyDie : Mortal
 
     }
 
-    public override void Hit()
-    {
-        Destroy(gameObject);
-    }
+    public abstract void Hit();
 }
