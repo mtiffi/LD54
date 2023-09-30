@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
     {
         if (chilli <= 3)
         {
-            return PoopType.big;
+            return PoopType.normal;
         }
         else if (chilli <= 7)
         {
