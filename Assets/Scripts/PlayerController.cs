@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     {
         normal,
         spray,
-        big
+        big,
+        laser
     }
     public float speed;
     public float shotSpeed;
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public GameObject poopPrefab;
     public PoopType currentPoopType = PoopType.normal;
     private Animator anim;
+
+    public float chilli;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +47,11 @@ public class PlayerController : MonoBehaviour
         shootDirection.z = 0.0f;
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
+
+        currentPoopType = GetCurrentPoopType();
+        chilli -= Random.Range(.5f, 2f);
+        if (chilli < 0)
+            chilli = 0;
 
         switch (currentPoopType)
         {
@@ -107,5 +115,36 @@ public class PlayerController : MonoBehaviour
         }
 
         rig.velocity = velocity.normalized * speed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Chilli")
+        {
+            if (chilli + 1 < 10)
+                chilli += 1;
+            else chilli = 10;
+            Destroy(other.gameObject);
+        }
+    }
+
+    private PoopType GetCurrentPoopType()
+    {
+        if (chilli <= 3)
+        {
+            return PoopType.big;
+        }
+        else if (chilli <= 7)
+        {
+            return PoopType.normal;
+        }
+        else if (chilli <= 9)
+        {
+            return PoopType.spray;
+        }
+        else
+        {
+            return PoopType.laser;
+        }
     }
 }
