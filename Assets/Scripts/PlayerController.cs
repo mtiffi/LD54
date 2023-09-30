@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,20 +15,26 @@ public class PlayerController : MonoBehaviour
     public float shotSpeed;
     private Rigidbody2D rig;
     public GameObject poopPrefab;
-    private PoopType currentPoopType = PoopType.big;
+    public PoopType currentPoopType = PoopType.normal;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
         if (Input.GetMouseButtonDown(0))
             Shoot();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
     }
 
     void Shoot()
@@ -68,20 +75,37 @@ public class PlayerController : MonoBehaviour
 
                 break;
         }
-
     }
 
     void Move()
     {
         Vector2 velocity = new Vector2();
-        if (Input.GetAxis("Horizontal") != 0)
-        {
-            velocity.x = Input.GetAxis("Horizontal");
-        }
+
         if (Input.GetAxis("Vertical") != 0)
         {
             velocity.y = Input.GetAxis("Vertical");
+            if (Input.GetAxis("Vertical") < 0)
+                anim.SetInteger("Direction", 0);
+            else
+                anim.SetInteger("Direction", 2);
         }
-        rig.velocity = velocity * speed;
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            velocity.x = Input.GetAxis("Horizontal");
+            if (Input.GetAxis("Horizontal") < 0)
+                anim.SetInteger("Direction", 3);
+            else
+                anim.SetInteger("Direction", 1);
+        }
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+        {
+            anim.speed = 0;
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
+        rig.velocity = velocity.normalized * speed;
     }
 }
