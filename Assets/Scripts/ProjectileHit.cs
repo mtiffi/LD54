@@ -9,8 +9,6 @@ public class ProjectileHit : Mortal
 {
     public GameObject poopShower;
     private Vector3 velocity, lastTransform;
-    private float timer;
-
     public PoopType pooptype = PoopType.normal;
 
 
@@ -23,13 +21,10 @@ public class ProjectileHit : Mortal
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer > .3f)
-        {
-            velocity = GetComponent<Rigidbody2D>().velocity;
-            lastTransform = transform.position;
-            timer = 0;
-        }
+
+        lastTransform = transform.position;
+        velocity = GetComponent<Rigidbody2D>().velocity;
+
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -41,6 +36,8 @@ public class ProjectileHit : Mortal
                 other.gameObject.GetComponent<Mortal>().Hit();
                 GameObject poopShowerInstance = Instantiate(poopShower, lastTransform, Quaternion.LookRotation(velocity));
             }
+            if (pooptype != PoopType.big)
+                Hit();
         }
     }
 
