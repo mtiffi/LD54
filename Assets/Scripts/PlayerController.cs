@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float shotSpeed;
     private Rigidbody2D rig;
-    public GameObject poopPrefab;
+    public GameObject poopPrefab, poopPrefab2;
     public PoopType currentPoopType = PoopType.normal;
     private Animator anim;
 
@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour
                 shootDirection = Quaternion.AngleAxis(-45, Vector3.forward) * shootDirection;
                 for (int i = 0; i < 10; i++)
                 {
-                    GameObject sprayPoopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                    sprayPoopInstance.transform.localScale = new Vector3(1, 1, 1);
+                    GameObject sprayPoopInstance = Instantiate(poopPrefab2, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                    sprayPoopInstance.transform.localScale = new Vector3(.3f, .3f, .3f);
                     sprayPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                     shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.spray;
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PoopType.big:
                 GameObject bigPoopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                bigPoopInstance.transform.localScale = new Vector3(10, 10, 1);
+                bigPoopInstance.transform.localScale = new Vector3(3, 3, 1);
                 bigPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed / 2;
                 bigPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.big;
 
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
             default:
                 GameObject poopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                poopInstance.transform.localScale = new Vector3(3, 3, 1);
+                poopInstance.transform.localScale = new Vector3(1, 1, 1);
                 poopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                 poopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.normal;
 
