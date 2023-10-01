@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public PoopType currentPoopType = PoopType.normal;
     private Animator anim;
 
+    public int lives = 3;
+
     public float chilli;
 
     // Start is called before the first frame update
@@ -128,6 +130,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Projectile")
+        {
+            if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy")
+            {
+                lives--;
+                other.gameObject.GetComponent<Mortal>().Hit();
+            }
+        }
+    }
+
     private PoopType GetCurrentPoopType()
     {
         if (chilli <= 3)
@@ -147,4 +161,5 @@ public class PlayerController : MonoBehaviour
             return PoopType.laser;
         }
     }
+
 }

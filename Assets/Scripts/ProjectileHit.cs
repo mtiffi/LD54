@@ -11,6 +11,7 @@ public class ProjectileHit : Mortal
     private Vector3 velocity, lastTransform;
     public PoopType pooptype = PoopType.normal;
 
+    public bool hitWallOnce;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,15 @@ public class ProjectileHit : Mortal
             }
             if (pooptype != PoopType.big)
                 Hit();
+        }
+        if (other.gameObject.tag == "Wall")
+        {
+            hitWallOnce = true;
+        }
+        if (other.gameObject.tag == "Player" && hitWallOnce)
+        {
+            GameObject poopShowerInstance = Instantiate(poopShower, lastTransform, Quaternion.LookRotation(velocity));
+
         }
     }
 
