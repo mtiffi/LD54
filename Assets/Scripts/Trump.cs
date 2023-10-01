@@ -78,8 +78,12 @@ public class Trump : Mortal
         {
             Instantiate(pooplosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
-            WinText.SetActive(true);
-            playerController.won = true;
+            if (playerController.lives > 0)
+            {
+                WinText.SetActive(true);
+                playerController.won = true;
+            }
+
         }
     }
 }

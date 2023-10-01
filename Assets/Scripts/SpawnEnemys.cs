@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,7 +14,7 @@ public class SpawnEnemys : MonoBehaviour
 
     public TextMeshProUGUI textMeshProUGUI;
 
-    private float time = 120;
+    private float time = 60;
 
     public float spawnTimer;
 
@@ -54,7 +54,11 @@ public class SpawnEnemys : MonoBehaviour
             timer = 0;
 
             Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
+                Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
             Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
+                Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
         }
     }
 

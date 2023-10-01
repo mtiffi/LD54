@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public float shotSpeed;
     private Rigidbody2D rig;
     public GameObject poopPrefab, poopPrefab2, poopPrefab3, poopExplosion;
-    public AudioClip poopnadoSound, slowSound, fart1, fartLong, fartShort, fartQuiet;
+    public AudioClip poopnadoSound, slowSound, fart1, fartLong, fartShort, fartQuiet, ohShit;
 
     private GameObject[] poops = new GameObject[3];
     public PoopType currentPoopType = PoopType.normal;
@@ -248,6 +248,9 @@ public class PlayerController : MonoBehaviour
         lives--;
         if (lives == 0)
         {
+            audioSource.clip = ohShit;
+            audioSource.Play();
+
             GameObject.Instantiate(poopExplosion, transform.position, Quaternion.identity);
 
             dead = true;

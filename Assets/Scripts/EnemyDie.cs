@@ -21,8 +21,8 @@ public class EnemyDie : Mortal
 
     public override void Hit()
     {
-        audioSource.clip = dieClip;
-        audioSource.Play();
+        // audioSource.clip = dieClip;
+        // audioSource.Play();
         GetComponent<PolygonCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
         Invoke("Die", 1.5f);
