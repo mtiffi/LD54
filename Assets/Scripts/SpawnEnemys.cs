@@ -47,7 +47,7 @@ public class SpawnEnemys : MonoBehaviour
         textMeshProUGUI.text = TimeSpan.FromSeconds(time).ToString(@"m\:ss");
         if (!donaldSpawned && time <= 0)
         {
-            Instantiate(donald, new Vector3(12, 0, 0), Quaternion.identity);
+            donald.SetActive(true);
             donaldSpawned = true;
         }
         if (timer > spawnTimer)
@@ -58,10 +58,10 @@ public class SpawnEnemys : MonoBehaviour
                 Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
                 if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
                     Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
-                if (UnityEngine.Random.Range(0f, 1f) <= 1f)
+                if (UnityEngine.Random.Range(0f, 1f) <= .7f)
                     Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
             }
-            if (UnityEngine.Random.Range(0f, 1f) <= 0.15f)
+            if (UnityEngine.Random.Range(0f, 1f) <= 0.5f)
                 Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
         }
     }

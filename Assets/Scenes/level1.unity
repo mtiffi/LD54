@@ -5603,6 +5603,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890865820}
   m_CullTransparentMesh: 1
+--- !u!1 &1033912214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4194383462664960772, guid: 76537d3143f189648bcda4ece8af79fb, type: 3}
+  m_PrefabInstance: {fileID: 4194383462973228178}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1082154794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7230,7 +7235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy1: {fileID: 3343559576176069949, guid: 5fb7dd94ba9821b4487f431db78fbeb7, type: 3}
   chilli: {fileID: 7538328237899383117, guid: 881c8cf961c9eaa4686b2fbb76057094, type: 3}
-  donald: {fileID: 4194383462664960772, guid: 76537d3143f189648bcda4ece8af79fb, type: 3}
+  donald: {fileID: 1033912214}
   maxX: 15.5
   maxY: 7.5
   textMeshProUGUI: {fileID: 1236588695}
