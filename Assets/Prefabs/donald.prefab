@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4194383462664960779}
   m_Layer: 10
   m_Name: donald
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hair: {fileID: 933038866241249852, guid: 6dadf3b89da808c45afbb22e7ca34a94, type: 3}
+  pooplosion: {fileID: 5510681095691913644, guid: 57f2ca793e42f0d49bc6813ca326078d, type: 3}
   withHair: {fileID: 21300000, guid: a0c56567fe1873341b5f2252e7ddf8b2, type: 3}
   withOutHair: {fileID: 21300000, guid: c7fc272ca54454f4bb68ee93bafe9435, type: 3}
   shotSpeed: 20
   walkSpeed: 10
+  lives: 10

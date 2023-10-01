@@ -22,7 +22,6 @@ public class Hair : Mortal
         if (goBack)
         {
             rig.velocity = new Vector2(0, 0);
-            rig.isKinematic = true;
             transform.position = Vector3.MoveTowards(transform.position, donaldTransform.position, speed * Time.deltaTime);
         }
     }
@@ -40,7 +39,7 @@ public class Hair : Mortal
     public override void Hit()
     {
         goBack = true;
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        gameObject.layer = LayerMask.NameToLayer("Hair");
 
     }
 }

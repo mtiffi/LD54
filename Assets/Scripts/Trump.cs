@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trump : MonoBehaviour
+public class Trump : Mortal
 {
     private bool hasHair = true, goingUp = true;
     private SpriteRenderer renderer;
@@ -66,16 +66,13 @@ public class Trump : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void Hit()
     {
-        if (other.gameObject.tag == "Projectile")
+        lives--;
+        if (lives == 0)
         {
-            lives--;
-            if (lives == 0)
-            {
-                Instantiate(pooplosion, transform.position, Quaternion.identity);
-                Destroy(gameObject);
-            }
+            Instantiate(pooplosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 }

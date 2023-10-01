@@ -19,9 +19,9 @@ TagManager:
   - Projectile_New
   - Projectile
   - Player
-  - 
-  - 
-  - 
+  - DoesNotCollideWithDonald
+  - Donald
+  - Hair
   - 
   - 
   - 

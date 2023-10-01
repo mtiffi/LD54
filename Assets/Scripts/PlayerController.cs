@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour
         normal,
         spray,
         big,
-        laser
+        laser,
+        slow
     }
     public float speed;
     public float shotSpeed;
     private Rigidbody2D rig;
     public GameObject poopPrefab, poopPrefab2, poopPrefab3, poopExplosion;
+    public AudioClip poopnadoSound, slowSound, fart1, fartLong, fartShort, fartQuiet;
 
     private GameObject[] poops = new GameObject[3];
     public PoopType currentPoopType = PoopType.normal;
@@ -27,12 +29,16 @@ public class PlayerController : MonoBehaviour
     public float chilli;
     private bool dead, pooping, lasering;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
+
+    private float slowPoopTimer = 0, slowPoopTime = 2;
 
     // Start is called before the first frame update
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         poops[0] = poopPrefab;
         poops[1] = poopPrefab2;
@@ -67,7 +73,19 @@ public class PlayerController : MonoBehaviour
 
     void SlowPoop()
     {
-        // spriteRenderer.color = Color.HSVToRGB(0,)
+        slowPoopTimer += Time.deltaTime;
+        spriteRenderer.color = Color.Lerp(Color.white, Color.red, slowPoopTimer / 4);
+        if (slowPoopTimer > slowPoopTime)
+        {
+            slowPoopTimer = 0;
+            pooping = false;
+            Vector3 shootDirection = GetShootDirection();
+            spriteRenderer.color = Color.white;
+            GameObject bigPoopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            bigPoopInstance.transform.localScale = new Vector3(.8f, .8f, 1);
+            bigPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed / 2;
+            bigPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.normal;
+        }
     }
 
     void Laser()
@@ -101,7 +119,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 shootDirection = GetShootDirection();
 
-        chilli -= Random.Range(.5f, 2f);
+        chilli--;
         if (chilli < 0)
             chilli = 0;
 
@@ -116,6 +134,7 @@ public class PlayerController : MonoBehaviour
                     sprayPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                     shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.spray;
+                    audioSource.clip = fartLong;
 
                 }
                 break;
@@ -124,10 +143,12 @@ public class PlayerController : MonoBehaviour
                 bigPoopInstance.transform.localScale = new Vector3(3, 3, 1);
                 bigPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed / 2;
                 bigPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.big;
+                audioSource.clip = fartQuiet;
 
                 break;
 
             case PoopType.laser:
+
                 for (int i = 0; i < 36; i++)
                 {
                     GameObject sprayPoopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
@@ -137,6 +158,11 @@ public class PlayerController : MonoBehaviour
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.laser;
                     sprayPoopInstance.transform.parent = transform;
                 }
+                audioSource.clip = poopnadoSound;
+                break;
+            case PoopType.slow:
+                pooping = true;
+                audioSource.clip = slowSound;
                 break;
 
             default:
@@ -144,9 +170,12 @@ public class PlayerController : MonoBehaviour
                 poopInstance.transform.localScale = new Vector3(1, 1, 1);
                 poopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                 poopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.normal;
+                audioSource.clip = fart1;
 
                 break;
         }
+        audioSource.Play();
+
     }
 
     void Move()
@@ -190,30 +219,45 @@ public class PlayerController : MonoBehaviour
             else chilli = 10;
             Destroy(other.gameObject);
         }
+        if (other.tag == "Hair")
+        {
+            Hit();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Projectile")
         {
-            if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Hair")
+            if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy")
             {
-                lives--;
                 other.gameObject.GetComponent<Mortal>().Hit();
-                if (lives == 0)
-                {
-                    GameObject.Instantiate(poopExplosion, transform.position, Quaternion.identity);
+                Hit();
 
-                    dead = true;
-                    GetComponent<PolygonCollider2D>().enabled = false;
-                    GetComponent<SpriteRenderer>().enabled = false;
-                }
             }
+        }
+    }
+
+    private void Hit()
+    {
+        lives--;
+        if (lives == 0)
+        {
+            GameObject.Instantiate(poopExplosion, transform.position, Quaternion.identity);
+
+            dead = true;
+            GetComponent<PolygonCollider2D>().enabled = false;
+            GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
     private PoopType GetCurrentPoopType()
     {
+        if (chilli == 0)
+        {
+            return PoopType.slow;
+        }
+        else
         if (chilli < 5)
         {
             return PoopType.normal;
@@ -226,10 +270,11 @@ public class PlayerController : MonoBehaviour
         {
             return PoopType.big;
         }
-        else
+        else if (chilli >= 10)
         {
             return PoopType.laser;
         }
+        else return PoopType.slow;
     }
 
 }
