@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!dead && !pooping)
+        if (!dead)
             Move();
         else
             rig.velocity = new Vector2(0, 0);
