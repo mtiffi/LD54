@@ -8,6 +8,7 @@ TagManager:
   - Chilli
   - Enemy
   - Wall
+  - Hair
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,9 @@ TagManager:
   - Projectile_New
   - Projectile
   - Player
-  - 
-  - 
-  - 
+  - DoesNotCollideWithDonald
+  - Donald
+  - Hair
   - 
   - 
   - 

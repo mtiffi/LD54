@@ -12,6 +12,9 @@ public class Poopnado : MonoBehaviour
     private Rigidbody2D rig;
     private bool rigOff;
 
+
+    private float timeToLive = 5;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,11 @@ public class Poopnado : MonoBehaviour
     {
         if (poopType != PoopType.laser)
             return;
+        timeToLive -= Time.deltaTime;
+        if (timeToLive < 0)
+        {
+            GameObject.Destroy(gameObject);
+        }
 
         timeToCircle -= Time.deltaTime;
         if (timeToCircle < 0)
@@ -33,6 +41,7 @@ public class Poopnado : MonoBehaviour
             {
                 rig.velocity = new Vector2(0, 0);
                 rig.isKinematic = true;
+                rig.useFullKinematicContacts = true;
                 rigOff = true;
 
             }
