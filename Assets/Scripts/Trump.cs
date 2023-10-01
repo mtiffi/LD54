@@ -65,7 +65,7 @@ public class Trump : Mortal
         if (other.gameObject.tag == "Hair")
         {
             Destroy(other.gameObject);
-            Invoke("RefreshHair", 1);
+            Invoke("RefreshHair", Random.Range(1f, 2f));
             renderer.sprite = withHair;
 
         }

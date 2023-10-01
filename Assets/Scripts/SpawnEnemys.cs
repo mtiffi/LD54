@@ -49,14 +49,16 @@ public class SpawnEnemys : MonoBehaviour
         {
             Instantiate(donald, new Vector3(12, 0, 0), Quaternion.identity);
         }
-        if (timer > spawnTimer && !donaldSpawned)
+        if (timer > spawnTimer)
         {
             timer = 0;
-
-            Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
-            if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
+            if (!donaldSpawned)
+            {
                 Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
-            Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
+                if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
+                    Instantiate(enemy1, GetPositionForObject(), Quaternion.identity);
+                Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
+            }
             if (UnityEngine.Random.Range(0f, 1f) <= 0.3f)
                 Instantiate(chilli, GetPositionForObject(), Quaternion.identity);
         }
