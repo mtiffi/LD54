@@ -145,4 +145,5 @@ MonoBehaviour:
   withOutHair: {fileID: 21300000, guid: c7fc272ca54454f4bb68ee93bafe9435, type: 3}
   shotSpeed: 20
   walkSpeed: 10
+  WinText: {fileID: 0}
   lives: 10

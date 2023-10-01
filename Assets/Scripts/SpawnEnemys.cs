@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnEnemys : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class SpawnEnemys : MonoBehaviour
     private float timer;
 
     private bool donaldSpawned;
+    private float restartTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,15 @@ public class SpawnEnemys : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.R))
+        {
+            restartTimer += Time.deltaTime;
+            if (restartTimer > 1)
+            {
+                SceneManager.LoadScene("level1");
+            }
+        }
+        else restartTimer = 0;
         timer += Time.deltaTime;
         time -= Time.deltaTime;
         if (time < 0) time = 0;

@@ -11,12 +11,17 @@ public class Trump : Mortal
     private Transform playerTransform;
     public float shotSpeed, walkSpeed;
 
+    public GameObject WinText;
+
+    private PlayerController playerController;
+
     public int lives = 10;
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<SpriteRenderer>();
         playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -73,6 +78,8 @@ public class Trump : Mortal
         {
             Instantiate(pooplosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
+            WinText.SetActive(true);
+            playerController.won = true;
         }
     }
 }

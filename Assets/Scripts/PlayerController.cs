@@ -31,7 +31,11 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
 
-    private float slowPoopTimer = 0, slowPoopTime = 2;
+    public GameObject LooseText;
+
+    public bool won;
+
+    private float slowPoopTimer = 0, slowPoopTime = 2.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +52,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !dead && !pooping && !lasering)
+        if (Input.GetMouseButtonDown(0) && !dead && !pooping && !lasering && !won)
             Shoot(GetCurrentPoopType());
         if (pooping)
         {
@@ -240,6 +244,7 @@ public class PlayerController : MonoBehaviour
 
     private void Hit()
     {
+        if (won) return;
         lives--;
         if (lives == 0)
         {
@@ -248,6 +253,7 @@ public class PlayerController : MonoBehaviour
             dead = true;
             GetComponent<PolygonCollider2D>().enabled = false;
             GetComponent<SpriteRenderer>().enabled = false;
+            LooseText.SetActive(true);
         }
     }
 
