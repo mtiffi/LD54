@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private bool dead, pooping, lasering;
     private SpriteRenderer spriteRenderer;
     private AudioSource audioSource;
-
+    public AudioSource ohShitAudioSource;
     public GameObject LooseText;
 
     public bool won;
@@ -244,12 +244,12 @@ public class PlayerController : MonoBehaviour
 
     private void Hit()
     {
+        ohShitAudioSource.Play();
         if (won) return;
         lives--;
         if (lives == 0)
         {
-            audioSource.clip = ohShit;
-            audioSource.Play();
+
 
             GameObject.Instantiate(poopExplosion, transform.position, Quaternion.identity);
 
