@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -15,34 +16,50 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float shotSpeed;
     private Rigidbody2D rig;
-    public GameObject poopPrefab, poopPrefab2;
+    public GameObject poopPrefab, poopPrefab2, poopExplosion;
     public PoopType currentPoopType = PoopType.normal;
     private Animator anim;
 
     public int lives = 3;
 
     public float chilli;
+    private bool dead, pooping;
+    private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            Shoot();
+        if (Input.GetMouseButtonDown(0) && !dead && !pooping)
+            Shoot(GetCurrentPoopType());
+        if (pooping)
+        {
+            SlowPoop();
+        }
     }
 
     private void FixedUpdate()
     {
-        Move();
+        if (!dead && !pooping)
+            Move();
+        else
+            rig.velocity = new Vector2(0, 0);
+
     }
 
-    void Shoot()
+    void SlowPoop()
+    {
+        // spriteRenderer.color = Color.HSVToRGB(0,)
+    }
+
+    void Shoot(PoopType poopType)
     {
         Vector3 shootDirection;
         shootDirection = Input.mousePosition;
@@ -50,19 +67,18 @@ public class PlayerController : MonoBehaviour
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
 
-        currentPoopType = GetCurrentPoopType();
         chilli -= Random.Range(.5f, 2f);
         if (chilli < 0)
             chilli = 0;
 
-        switch (currentPoopType)
+        switch (poopType)
         {
             case PoopType.spray:
                 shootDirection = Quaternion.AngleAxis(-45, Vector3.forward) * shootDirection;
                 for (int i = 0; i < 10; i++)
                 {
                     GameObject sprayPoopInstance = Instantiate(poopPrefab2, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                    sprayPoopInstance.transform.localScale = new Vector3(.3f, .3f, .3f);
+                    sprayPoopInstance.transform.localScale = new Vector3(.8f, .8f, .8f);
                     sprayPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                     shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.spray;
@@ -138,6 +154,14 @@ public class PlayerController : MonoBehaviour
             {
                 lives--;
                 other.gameObject.GetComponent<Mortal>().Hit();
+                if (lives == 0)
+                {
+                    GameObject.Instantiate(poopExplosion, transform.position, Quaternion.identity);
+
+                    dead = true;
+                    GetComponent<PolygonCollider2D>().enabled = false;
+                    GetComponent<SpriteRenderer>().enabled = false;
+                }
             }
         }
     }
