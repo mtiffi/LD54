@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 1089574118}
   - component: {fileID: 6228427885116432794}
   - component: {fileID: 8266312085335962212}
+  - component: {fileID: 6677766772209037818}
   m_Layer: 6
   m_Name: poop
   m_TagString: Projectile
@@ -278,6 +279,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189d14810e6dd124cbf5d8b9277d340c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6677766772209037818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2725219519262187881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995427a2a2db7954ab6a4b1bc4817d0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 150
+  timeToCircle: 0.3
 --- !u!1 &5527720774562058269
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class NewProjectile : MonoBehaviour
             time -= Time.deltaTime;
             if (time < 0)
             {
-                gameObject.layer = LayerMask.NameToLayer("Projectile");
+                if (GetComponent<ProjectileHit>().pooptype != PlayerController.PoopType.laser)
+                    gameObject.layer = LayerMask.NameToLayer("Projectile");
                 isProjectile = true;
             }
         }

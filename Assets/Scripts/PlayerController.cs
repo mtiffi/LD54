@@ -16,14 +16,16 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float shotSpeed;
     private Rigidbody2D rig;
-    public GameObject poopPrefab, poopPrefab2, poopExplosion;
+    public GameObject poopPrefab, poopPrefab2, poopPrefab3, poopExplosion;
+
+    private GameObject[] poops = new GameObject[3];
     public PoopType currentPoopType = PoopType.normal;
     private Animator anim;
 
     public int lives = 3;
 
     public float chilli;
-    private bool dead, pooping;
+    private bool dead, pooping, lasering;
     private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
@@ -32,16 +34,24 @@ public class PlayerController : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        poops[0] = poopPrefab;
+        poops[1] = poopPrefab2;
+        poops[2] = poopPrefab3;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !dead && !pooping)
+        if (Input.GetMouseButtonDown(0) && !dead && !pooping && !lasering)
             Shoot(GetCurrentPoopType());
         if (pooping)
         {
             SlowPoop();
+        }
+
+        if (lasering)
+        {
+            Laser();
         }
     }
 
@@ -52,6 +62,7 @@ public class PlayerController : MonoBehaviour
         else
             rig.velocity = new Vector2(0, 0);
 
+
     }
 
     void SlowPoop()
@@ -59,13 +70,36 @@ public class PlayerController : MonoBehaviour
         // spriteRenderer.color = Color.HSVToRGB(0,)
     }
 
-    void Shoot(PoopType poopType)
+    void Laser()
+    {
+        if (Time.frameCount % 10 == 0)
+        {
+            int randomPoop = Random.Range(0, 2);
+            float randomSize = Random.Range(.3f, 2f);
+            float randomXOffset = Random.Range(-.1f, .1f);
+            float randomYOffset = Random.Range(-.1f, .1f);
+            Vector3 shootDirection = GetShootDirection();
+            GameObject poopInstance = Instantiate(poops[randomPoop], new Vector3(transform.position.x + randomXOffset, transform.position.y + randomYOffset, transform.position.z), Quaternion.Euler(new Vector3(0, 0, 0)));
+            poopInstance.transform.localScale = new Vector3(randomSize, randomSize, 1);
+            poopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
+            poopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.laser;
+        }
+
+    }
+
+    Vector3 GetShootDirection()
     {
         Vector3 shootDirection;
         shootDirection = Input.mousePosition;
         shootDirection.z = 0.0f;
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
+        return shootDirection;
+    }
+
+    void Shoot(PoopType poopType)
+    {
+        Vector3 shootDirection = GetShootDirection();
 
         chilli -= Random.Range(.5f, 2f);
         if (chilli < 0)
@@ -91,6 +125,18 @@ public class PlayerController : MonoBehaviour
                 bigPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed / 2;
                 bigPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.big;
 
+                break;
+
+            case PoopType.laser:
+                for (int i = 0; i < 36; i++)
+                {
+                    GameObject sprayPoopInstance = Instantiate(poopPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                    sprayPoopInstance.transform.localScale = new Vector3(.8f, .8f, .8f);
+                    sprayPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed * Random.Range(.5f, 3f);
+                    shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
+                    sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.laser;
+                    sprayPoopInstance.transform.parent = transform;
+                }
                 break;
 
             default:
@@ -168,17 +214,17 @@ public class PlayerController : MonoBehaviour
 
     private PoopType GetCurrentPoopType()
     {
-        if (chilli <= 3)
+        if (chilli < 5)
         {
             return PoopType.normal;
         }
-        else if (chilli <= 7)
-        {
-            return PoopType.normal;
-        }
-        else if (chilli <= 9)
+        else if (chilli < 8)
         {
             return PoopType.spray;
+        }
+        else if (chilli < 10)
+        {
+            return PoopType.big;
         }
         else
         {
