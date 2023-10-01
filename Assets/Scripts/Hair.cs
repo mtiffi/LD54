@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerController;
 
 public class Hair : Mortal
 {
@@ -36,7 +37,7 @@ public class Hair : Mortal
         }
     }
 
-    public override void Hit()
+    public override void Hit(PoopType pooptype)
     {
         goBack = true;
         gameObject.layer = LayerMask.NameToLayer("Hair");

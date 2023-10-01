@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -124,8 +122,6 @@ public class PlayerController : MonoBehaviour
         Vector3 shootDirection = GetShootDirection();
 
         chilli--;
-        if (chilli < 0)
-            chilli = 0;
 
         switch (poopType)
         {
@@ -139,7 +135,7 @@ public class PlayerController : MonoBehaviour
                     shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.spray;
                     audioSource.clip = fartLong;
-
+                    chilli -= 3;
                 }
                 break;
             case PoopType.big:
@@ -148,7 +144,7 @@ public class PlayerController : MonoBehaviour
                 bigPoopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed / 2;
                 bigPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.big;
                 audioSource.clip = fartQuiet;
-
+                chilli -= 3;
                 break;
 
             case PoopType.laser:
@@ -161,6 +157,7 @@ public class PlayerController : MonoBehaviour
                     shootDirection = Quaternion.AngleAxis(10, Vector3.forward) * shootDirection;
                     sprayPoopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.laser;
                     sprayPoopInstance.transform.parent = transform;
+                    chilli -= 10;
                 }
                 audioSource.clip = poopnadoSound;
                 break;
@@ -175,10 +172,15 @@ public class PlayerController : MonoBehaviour
                 poopInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * shotSpeed;
                 poopInstance.GetComponent<ProjectileHit>().pooptype = PoopType.normal;
                 audioSource.clip = fart1;
+                chilli--;
 
                 break;
+
         }
         audioSource.Play();
+        if (chilli < 0)
+            chilli = 0;
+
 
     }
 
@@ -235,7 +237,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<Mortal>().Hit();
+                other.gameObject.GetComponent<Mortal>().Hit(PoopType.normal);
                 Hit();
 
             }

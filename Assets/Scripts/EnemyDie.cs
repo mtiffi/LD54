@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerController;
 
 public class EnemyDie : Mortal
 {
@@ -19,7 +20,7 @@ public class EnemyDie : Mortal
 
     }
 
-    public override void Hit()
+    public override void Hit(PoopType pooptype)
     {
         // audioSource.clip = dieClip;
         // audioSource.Play();

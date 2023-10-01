@@ -5234,7 +5234,6 @@ GameObject:
   m_Component:
   - component: {fileID: 619394802}
   - component: {fileID: 619394801}
-  - component: {fileID: 619394803}
   - component: {fileID: 619394804}
   m_Layer: 0
   m_Name: Global Light 2D
@@ -5337,20 +5336,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &619394803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619394800}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3328e84e9afab9948a95c63c06c74055, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeBetweenFlickers: 5
-  flickerTime: 0.3
 --- !u!82 &619394804
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6448,7 +6433,7 @@ MonoBehaviour:
   ohShit: {fileID: 8300000, guid: 05e6f7fb54f8469429e2cacf19d76041, type: 3}
   currentPoopType: 0
   lives: 3
-  chilli: 2
+  chilli: 0
   ohShitAudioSource: {fileID: 619394804}
   LooseText: {fileID: 1871194503}
   won: 0

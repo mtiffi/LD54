@@ -34,11 +34,11 @@ public class ProjectileHit : Mortal
         {
             if (!other.gameObject.GetComponent<ProjectileHit>() || other.gameObject.GetComponent<ProjectileHit>().pooptype != PoopType.big)
             {
-                other.gameObject.GetComponent<Mortal>().Hit();
+                other.gameObject.GetComponent<Mortal>().Hit(pooptype);
                 GameObject poopShowerInstance = Instantiate(poopShower, lastTransform, Quaternion.LookRotation(velocity));
             }
             if (pooptype != PoopType.big)
-                Hit();
+                Hit(pooptype);
         }
         if (other.gameObject.tag == "Wall")
         {
@@ -51,7 +51,7 @@ public class ProjectileHit : Mortal
         }
     }
 
-    public override void Hit()
+    public override void Hit(PoopType poopType)
     {
         Invoke("Die", .0001f);
     }

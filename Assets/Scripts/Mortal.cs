@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerController;
 
 public abstract class Mortal : MonoBehaviour
 {
@@ -16,5 +17,5 @@ public abstract class Mortal : MonoBehaviour
 
     }
 
-    public abstract void Hit();
+    public abstract void Hit(PoopType poopType);
 }

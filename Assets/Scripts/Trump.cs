@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using static PlayerController;
 
 public class Trump : Mortal
 {
@@ -15,7 +17,7 @@ public class Trump : Mortal
 
     private PlayerController playerController;
 
-    public int lives = 10;
+    public float lives = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,9 +73,14 @@ public class Trump : Mortal
         }
     }
 
-    public override void Hit()
+    public override void Hit(PoopType poopType)
     {
-        lives--;
+        if (poopType == PoopType.laser)
+        {
+            lives -= .1f;
+        }
+        else
+            lives--;
         if (lives == 0)
         {
             Instantiate(pooplosion, transform.position, Quaternion.identity);
