@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Projectile")
         {
-            if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy")
+            if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Hair")
             {
                 lives--;
                 other.gameObject.GetComponent<Mortal>().Hit();
