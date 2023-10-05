@@ -22,8 +22,12 @@ public class EnemyDie : Mortal
 
     public override void Hit(PoopType pooptype)
     {
-        // audioSource.clip = dieClip;
-        // audioSource.Play();
+        if (pooptype != PoopType.player)
+        {
+            audioSource.clip = dieClip;
+            audioSource.Play();
+        }
+
         GetComponent<PolygonCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
         Invoke("Die", 1.5f);

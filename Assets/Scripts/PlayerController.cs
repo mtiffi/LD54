@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
         spray,
         big,
         laser,
-        slow
+        slow,
+        player
     }
     public float speed;
     public float shotSpeed;
@@ -237,7 +238,7 @@ public class PlayerController : MonoBehaviour
         {
             if ((other.gameObject.tag == "Projectile" && other.gameObject.GetComponent<ProjectileHit>().hitWallOnce) || other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<Mortal>().Hit(PoopType.normal);
+                other.gameObject.GetComponent<Mortal>().Hit(PoopType.player);
                 Hit();
 
             }
